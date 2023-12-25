@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('rtl');
 
 	Route::get('pembayaran-spp', function () {
-		return view('laravel-examples/user-management');
+		return view('laravel-examples/pembayaran-spp');
 	})->name('pembayaran-spp');
 
 	Route::get('tables', function () {
