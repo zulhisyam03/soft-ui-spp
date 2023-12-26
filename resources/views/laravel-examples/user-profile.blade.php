@@ -128,14 +128,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.location" class="form-control-label">{{ __('NIM') }}</label>
-                                <div class="@error('user.location') border border-danger rounded-3 @enderror">
-                                    <input class="form-control" type="text" placeholder="Location" id="nim" name="nim" value="{{ auth()->user()->nim }}">
-                                </div>
-                            </div>
-                        </div> --}}
                         </div>
                         <div class="form-group">
                             <label for="about">{{ 'About Me' }}</label>

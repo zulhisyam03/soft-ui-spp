@@ -46,5 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userPembayaran(){
+        return $this->belongsTo(User::class, 'nim','nim');
+    }
     
 }

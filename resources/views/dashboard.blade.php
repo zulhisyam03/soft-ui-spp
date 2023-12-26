@@ -108,7 +108,7 @@
                                     <br><b>Tahun Ajaran :</b> <span id='tahunAjaran'>2023 / 2024</span>
                                 </p>
                                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
-                                    href="javascript:;">
+                                    href="{{ Route('pembayaran-spp') }}">
                                     Pembayaran SPP
                                     <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i>
                                 </a>

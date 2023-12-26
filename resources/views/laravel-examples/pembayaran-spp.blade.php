@@ -1,5 +1,14 @@
 @extends('layouts.user_type.auth')
+<style>
+    sup {
+        color: red;
+        font-size: 4px;
+    }
 
+    input {
+        text-transform: uppercase;
+    }
+</style>
 @section('content')
     <div>
         {{-- <div class="alert alert-secondary mx-4" role="alert">
@@ -26,32 +35,33 @@
                         <form action="{{ Route('save-spp') }}" method="POST">
                             @csrf
                             <div class="row mb-3">
-                                <div class="col-md-2">NIM</div>
+                                <div class="col-md-2">NIM<sup>(*)</sup></div>
                                 <div class="col-md-6"><input type="text" name="nim" id="nim"
-                                        class="form-control">
+                                        class="form-control" value="{{ auth()->user()->nim }}" required readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-2">Nama Mahasiswa</div>
+                                <div class="col-md-2">Nama Mahasiswa<sup>(*)</sup></div>
                                 <div class="col-md-6"><input type="text" name="nama_mahasiswa" id="namaMahasiswa"
-                                        class="form-control"></div>
+                                        value="{{ auth()->user()->name }}" class="form-control" required readonly></div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-2">Pembayaran Semester</div>
-                                <div class="col-md-6"><input type="number" name="pembayaran_semester"
-                                        id="pembayaranSemester" class="form-control"></div>
+                                <div class="col-md-2">Semester<sup>(*)</sup></div>
+                                <div class="col-md-6"><input type="number" name="semester"
+                                        id="semester" class="form-control" placeholder="1"></div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-2">Jumlah</div>
+                                <div class="col-md-2">Jumlah<sup>(*)</sup></div>
                                 <div class="col-md-6"><input type="text" name="pembayaran_semester"
-                                        id="pembayaranSemester" class="form-control" oninput="formatCurrency(this)">
+                                        id="pembayaranSemester" class="form-control" oninput="formatCurrency(this)"
+                                        required placeholder="Rp. 2.000.000">
                                     <input type="hidden" name="amount" id="amount">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-md-2">Upload Bukti Bayar</div>
+                                <div class="col-md-2">Upload Bukti Bayar<sup>(*)</sup></div>
                                 <div class="col-md-6"><input type="file" name="bukti_bayar" id="buktiBayar"
-                                        class="form-control" accept="image/*">
+                                        class="form-control" accept="image/*" required>
                                     <span id="imgBukti" class="mt-3"></span>
                                 </div>
                             </div>

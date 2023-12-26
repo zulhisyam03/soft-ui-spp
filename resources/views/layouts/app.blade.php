@@ -95,7 +95,7 @@
             }).format(value);
 
             input.value = formattedAmount;
-            document.getElementById('#amount').value = value;
+            document.getElementById('amount').value = value;
         }
     </script>
 
