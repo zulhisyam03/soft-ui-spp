@@ -19,7 +19,10 @@ class Pembayaran extends Model
     ];
 
     public function pembayaranUser(){
-        return $this->hasMany(Pembayaran::class, 'nim','nim');
+        return $this->belongsTo(User::class, 'nim','nim');
+    }
 
+    public function pembayaranImages(){
+        return $this->belongsTo(Images::class, 'id', 'pict_bukti');
     }
 }

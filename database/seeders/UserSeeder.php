@@ -19,6 +19,8 @@ class UserSeeder extends Seeder
             'id' => 1,
             'name' => 'admin',
             'email' => 'admin@softui.com',
+            'nim' => '12345678',
+            'prodi' => 'ti',
             'password' => Hash::make('secret'),
             'created_at' => now(),
             'updated_at' => now()

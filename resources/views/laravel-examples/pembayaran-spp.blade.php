@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="card-body px-5 pt-3 pb-2">
-                        <form action="{{ Route('save-spp') }}" method="POST">
+                        <form action="{{ Route('save-spp') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-3">
                                 <div class="col-md-2">NIM<sup>(*)</sup></div>

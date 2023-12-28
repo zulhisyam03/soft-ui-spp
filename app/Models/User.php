@@ -48,7 +48,7 @@ class User extends Authenticatable
     ];
 
     public function userPembayaran(){
-        return $this->belongsTo(User::class, 'nim','nim');
+        return $this->hasMany(Pembayaran::class, 'nim','nim');
     }
     
 }

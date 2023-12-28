@@ -92,6 +92,25 @@
     </div>
   </div> --}}
 
+    @if ($errors->any())
+        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+            <span class="alert-text text-white">
+                {{ $errors->first() }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </button>
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success" role="alert">
+            <span class="alert-text text-white">
+                {{ session('success') }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </button>
+        </div>
+    @endif
+
     <div class="row mt-1">
         <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card">
@@ -100,12 +119,19 @@
                         <div class="col-lg-6">
                             <div class="d-flex flex-column h-100">
                                 <p class="mb-1 pt-2 text-bold">Status Pembayaran</p>
-                                <h5 class="font-weight-bolder text-warning" id='statusPembayaran'>In Progress..</h5>
+                                @if ($dataPembayaran->status === 'p')
+                                    <h5 class="font-weight-bolder text-warning" id='statusPembayaran'> In Progress
+                                    @else
+                                        <h5 class="font-weight-bolder text-success" id='statusPembayaran'> Approve
+                                @endif
+                                </h5>
                                 <p>
-                                    <b>Nama Mahasiswa :</b> <span id='namaMahasiswa'>Zul Hisyam</span>
-                                    <br><b>NIM :</b> <span id='nim'>72100102</span>
-                                    <br><b>Semester :</b> <span id='semester'>IV</span>
-                                    <br><b>Tahun Ajaran :</b> <span id='tahunAjaran'>2023 / 2024</span>
+                                    <b>Nama Mahasiswa :</b> <span
+                                        id='namaMahasiswa'>{{ ucwords($dataPembayaran->pembayaranUser['name']) }}</span>
+                                    <br><b>NIM :</b> <span id='nim'>{{ $dataPembayaran->nim }}</span>
+                                    <br><b>Semester :</b> <span id='semester'>{{ $dataPembayaran->semester }}</span>
+                                    <br><b>Tahun Ajaran :</b> <span
+                                        id='tahunAjaran'>{{ $dataPembayaran->tahun_ajaran }}</span>
                                 </p>
                                 <a class="text-body text-sm font-weight-bold mb-0 icon-move-right mt-auto"
                                     href="{{ Route('pembayaran-spp') }}">
@@ -195,32 +221,34 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            {{-- <div>
-                        <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
-                      </div> --}}
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">12 Desember 2023</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        III
-                                    </td>
-                                    <td class="align-middle text-center text-sm">
-                                        2023 / 2024
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <span class="text-xs font-weight-bold"> $14,000 </span>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                        &nbsp;
-                                        <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                    </td>
-                                </tr>
+                              @foreach ($history as $item)
+                              <tr>
+                                  <td>
+                                      <div class="d-flex px-2 py-1">
+                                          {{-- <div>
+                      <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm me-3" alt="xd">
+                    </div> --}}
+                                          <div class="d-flex flex-column justify-content-center">
+                                              <h6 class="mb-0 text-sm">{{ $item->formatted_created_at }}</h6>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      III
+                                  </td>
+                                  <td class="align-middle text-center text-sm">
+                                      2023 / 2024
+                                  </td>
+                                  <td class="align-middle text-center">
+                                      <span class="text-xs font-weight-bold"> $14,000 </span>
+                                  </td>
+                                  <td class="align-middle text-center">
+                                      <a href="#"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                      &nbsp;
+                                      <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  </td>
+                              </tr>
+                              @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -232,174 +260,174 @@
 @push('dashboard')
     <script>
         window.onload = function() {
-            var ctx = document.getElementById("chart-bars").getContext("2d");
+            // var ctx = document.getElementById("chart-bars").getContext("2d");
 
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Sales",
-                        tension: 0.4,
-                        borderWidth: 0,
-                        borderRadius: 4,
-                        borderSkipped: false,
-                        backgroundColor: "#fff",
-                        data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-                        maxBarThickness: 6
-                    }, ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index',
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                            },
-                            ticks: {
-                                suggestedMin: 0,
-                                suggestedMax: 500,
-                                beginAtZero: true,
-                                padding: 15,
-                                font: {
-                                    size: 14,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                                color: "#fff"
-                            },
-                        },
-                        x: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false
-                            },
-                            ticks: {
-                                display: false
-                            },
-                        },
-                    },
-                },
-            });
+            // new Chart(ctx, {
+            //     type: "bar",
+            //     data: {
+            //         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            //         datasets: [{
+            //             label: "Sales",
+            //             tension: 0.4,
+            //             borderWidth: 0,
+            //             borderRadius: 4,
+            //             borderSkipped: false,
+            //             backgroundColor: "#fff",
+            //             data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+            //             maxBarThickness: 6
+            //         }, ],
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: {
+            //                 display: false,
+            //             }
+            //         },
+            //         interaction: {
+            //             intersect: false,
+            //             mode: 'index',
+            //         },
+            //         scales: {
+            //             y: {
+            //                 grid: {
+            //                     drawBorder: false,
+            //                     display: false,
+            //                     drawOnChartArea: false,
+            //                     drawTicks: false,
+            //                 },
+            //                 ticks: {
+            //                     suggestedMin: 0,
+            //                     suggestedMax: 500,
+            //                     beginAtZero: true,
+            //                     padding: 15,
+            //                     font: {
+            //                         size: 14,
+            //                         family: "Open Sans",
+            //                         style: 'normal',
+            //                         lineHeight: 2
+            //                     },
+            //                     color: "#fff"
+            //                 },
+            //             },
+            //             x: {
+            //                 grid: {
+            //                     drawBorder: false,
+            //                     display: false,
+            //                     drawOnChartArea: false,
+            //                     drawTicks: false
+            //                 },
+            //                 ticks: {
+            //                     display: false
+            //                 },
+            //             },
+            //         },
+            //     },
+            // });
 
 
-            var ctx2 = document.getElementById("chart-line").getContext("2d");
+            // var ctx2 = document.getElementById("chart-line").getContext("2d");
 
-            var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+            // var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
 
-            gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
-            gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-            gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+            // gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+            // gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+            // gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
 
-            var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+            // var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
 
-            gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
-            gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-            gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+            // gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+            // gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+            // gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
-            new Chart(ctx2, {
-                type: "line",
-                data: {
-                    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                            label: "Mobile apps",
-                            tension: 0.4,
-                            borderWidth: 0,
-                            pointRadius: 0,
-                            borderColor: "#cb0c9f",
-                            borderWidth: 3,
-                            backgroundColor: gradientStroke1,
-                            fill: true,
-                            data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                            maxBarThickness: 6
+            // new Chart(ctx2, {
+            //     type: "line",
+            //     data: {
+            //         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            //         datasets: [{
+            //                 label: "Mobile apps",
+            //                 tension: 0.4,
+            //                 borderWidth: 0,
+            //                 pointRadius: 0,
+            //                 borderColor: "#cb0c9f",
+            //                 borderWidth: 3,
+            //                 backgroundColor: gradientStroke1,
+            //                 fill: true,
+            //                 data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+            //                 maxBarThickness: 6
 
-                        },
-                        {
-                            label: "Websites",
-                            tension: 0.4,
-                            borderWidth: 0,
-                            pointRadius: 0,
-                            borderColor: "#3A416F",
-                            borderWidth: 3,
-                            backgroundColor: gradientStroke2,
-                            fill: true,
-                            data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-                            maxBarThickness: 6
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index',
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                drawBorder: false,
-                                display: true,
-                                drawOnChartArea: true,
-                                drawTicks: false,
-                                borderDash: [5, 5]
-                            },
-                            ticks: {
-                                display: true,
-                                padding: 10,
-                                color: '#b2b9bf',
-                                font: {
-                                    size: 11,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                            }
-                        },
-                        x: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                                borderDash: [5, 5]
-                            },
-                            ticks: {
-                                display: true,
-                                color: '#b2b9bf',
-                                padding: 20,
-                                font: {
-                                    size: 11,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                            }
-                        },
-                    },
-                },
-            });
+            //             },
+            //             {
+            //                 label: "Websites",
+            //                 tension: 0.4,
+            //                 borderWidth: 0,
+            //                 pointRadius: 0,
+            //                 borderColor: "#3A416F",
+            //                 borderWidth: 3,
+            //                 backgroundColor: gradientStroke2,
+            //                 fill: true,
+            //                 data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+            //                 maxBarThickness: 6
+            //             },
+            //         ],
+            //     },
+            //     options: {
+            //         responsive: true,
+            //         maintainAspectRatio: false,
+            //         plugins: {
+            //             legend: {
+            //                 display: false,
+            //             }
+            //         },
+            //         interaction: {
+            //             intersect: false,
+            //             mode: 'index',
+            //         },
+            //         scales: {
+            //             y: {
+            //                 grid: {
+            //                     drawBorder: false,
+            //                     display: true,
+            //                     drawOnChartArea: true,
+            //                     drawTicks: false,
+            //                     borderDash: [5, 5]
+            //                 },
+            //                 ticks: {
+            //                     display: true,
+            //                     padding: 10,
+            //                     color: '#b2b9bf',
+            //                     font: {
+            //                         size: 11,
+            //                         family: "Open Sans",
+            //                         style: 'normal',
+            //                         lineHeight: 2
+            //                     },
+            //                 }
+            //             },
+            //             x: {
+            //                 grid: {
+            //                     drawBorder: false,
+            //                     display: false,
+            //                     drawOnChartArea: false,
+            //                     drawTicks: false,
+            //                     borderDash: [5, 5]
+            //                 },
+            //                 ticks: {
+            //                     display: true,
+            //                     color: '#b2b9bf',
+            //                     padding: 20,
+            //                     font: {
+            //                         size: 11,
+            //                         family: "Open Sans",
+            //                         style: 'normal',
+            //                         lineHeight: 2
+            //                     },
+            //                 }
+            //             },
+            //         },
+            //     },
+            // });
         }
     </script>
 @endpush

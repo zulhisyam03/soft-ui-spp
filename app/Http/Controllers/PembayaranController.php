@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use App\Helper\Images;
+use Carbon\Carbon;
 
 class PembayaranController extends Controller
 {
@@ -29,7 +31,26 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request);
+        $tahun = Carbon::now()->year;
+        $validasi = $request->validate([
+            'nim' => 'required',
+            'nama_mahasiswa' => 'required',
+            'semester' => 'required|numeric',
+            'amount' => 'required|numeric',
+        ]);
+
+        $validasi['prodi'] = auth()->user()->prodi;
+        $validasi['tahun_ajaran'] = $tahun;
+        $validasi['pict_bukti'] = '1';
+        $validasi['status'] = 'p';
+
+        $validasiImage = $request->validate([
+            'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg|max:1024',
+        ]);
+
+        $pembayaran = Pembayaran::create($validasi);
+
+        return redirect('/dashboard')->with('success','sukses upload bukti pembayaran SPP');
     }
 
     /**
